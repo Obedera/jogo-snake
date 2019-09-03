@@ -7,14 +7,18 @@ body{
 }
 section{
     display: grid;
-    grid-template-columns: repeat(15, 30px);
-    grid-template-rows: repeat(15, 30px);
+    grid-template-columns: repeat(16, 30px);
+    grid-template-rows: repeat(16, 30px);
     grid-gap: 1px;
 }
 section div{
     align-items: center;
+    background-color: saddlebrown;
     border: 1px solid black;
     border-radius: 8px 8px 8px 8px;
     display: flex;
     justify-content: center;
+}
+.parede{
+    background-color: black;
 }

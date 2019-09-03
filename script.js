@@ -19,39 +19,33 @@ function acharPosicao(lista){
     }
 }
 
+let direcao = 1;
+let movimentar = setInterval(function(){
+        let campo = document.querySelectorAll('section div');
+        let posicao = acharPosicao(campo);
+        campo[posicao].name = '';
+        campo[posicao].innerHTML = '';
+        campo[posicao+direcao].name = snake;
+        campo[posicao+direcao].innerHTML = snake;
+},300);
 
 
 function mudarPosicao(tecla){
-    let campo = document.querySelectorAll('section div');
-    let posicao = acharPosicao(campo);
-    console.log(posicao);
     // Baixo
     if(tecla == 40){
-        campo[posicao].name = '';
-        campo[posicao].innerHTML = '';
-        campo[posicao+15].name = snake;
-        campo[posicao+15].innerHTML = snake;
+        direcao = 15;
     }
     // Direita
     if(tecla == 39){
-        campo[posicao].name = '';
-        campo[posicao].innerHTML = '';
-        campo[posicao+1].name = snake;
-        campo[posicao+1].innerHTML = snake;
+        direcao = 1;
     }
     // Cima
     if(tecla == 38){
-        campo[posicao].name = '';
-        campo[posicao].innerHTML = '';
-        campo[posicao-15].name = snake;
-        campo[posicao-15].innerHTML = snake;
+        direcao = -15;
     }
     // Esquerda
     if(tecla == 37){
-        campo[posicao].name = '';
-        campo[posicao].innerHTML = '';
-        campo[posicao-1].name = snake;
-        campo[posicao-1].innerHTML = snake;
+        direcao = -1;
     }    
 }
 

@@ -34,7 +34,15 @@ function acharPosicao(lista){
     }
 }
 
-function checarJogo(posicao){
+function checarJogo(posicao, campo){
+    if(campo[posicao].innerHTML=='@'){
+        corpo = corpo.concat(corpo[corpo.length-1]);
+    }
+    if(campo[posicao].innerHTML=='#'){
+        clearInterval(movimentar);
+        clearInterval(gerarAlimento);
+        alert('vc perdeu');
+    }
     if(posicao%16 == 0 || (posicao+1)%16 == 0){
         clearInterval(movimentar);
         clearInterval(gerarAlimento);
@@ -114,12 +122,12 @@ let movimentar = setInterval(function(){
         campo[corpo[i]].name = '#';
         campo[corpo[i]].innerHTML = '#';
     }
-    
+
     campo[corpo[corpo.length-1]].name = '';
     campo[corpo[corpo.length-1]].innerHTML = '';
+    checarJogo(corpo[0]+direcao, campo);
     campo[corpo[0]+direcao].name = snake;
     campo[corpo[0]+direcao].innerHTML = snake;
-    checarJogo(corpo[0]+direcao);
     estadoTecla = 'destravado';
 },300);
 

@@ -1,6 +1,8 @@
 let jogo = document.querySelector('section');
+let estadoTecla = 'destravado';
 let snake = '$';
 let direcao = 1;
+let corpo = [116,115,114];
 
 for(i=0;i<256;i++){
     jogo.innerHTML += '<div class="parede" name=""></div>';
@@ -12,11 +14,16 @@ for(i=17;i<239;i++){
     }
 }
 
-document.querySelectorAll('section div')[106].innerHTML = snake;
-document.querySelectorAll('section div')[106].name = snake;
+document.querySelectorAll('section div')[corpo[0]].innerHTML = snake;
+document.querySelectorAll('section div')[corpo[0]].name = snake;
+document.querySelectorAll('section div')[corpo[1]].innerHTML = '#';
+document.querySelectorAll('section div')[corpo[1]].name = '#';
+
 
 function pegarTecla(event){
-    return mudarPosicao(event.keyCode);
+    if(estadoTecla == 'destravado'){
+        return mudarPosicao(event.keyCode);
+    }
 }
 
 function acharPosicao(lista){
@@ -41,6 +48,7 @@ function checarJogo(posicao){
 }
 
 function mudarPosicao(tecla){
+    estadoTecla = 'travado';
     // Baixo
     if(tecla == 40){
         if(direcao != -16){
@@ -95,11 +103,24 @@ function alimento(){
 let movimentar = setInterval(function(){
     let campo = document.querySelectorAll('section div');
     let posicao = acharPosicao(campo);
-    campo[posicao].name = '';
-    campo[posicao].innerHTML = '';
-    checarJogo(posicao+direcao);
-    campo[posicao+direcao].name = snake;
-    campo[posicao+direcao].innerHTML = snake;
+    let aux = [];
+    aux[0] = posicao;
+    for(i=0;i<corpo.length-1;i++){
+        aux[i+1] = corpo[i];
+    }
+    corpo = aux;
+
+    for(i=0;i<corpo.length;i++){
+        campo[corpo[i]].name = '#';
+        campo[corpo[i]].innerHTML = '#';
+    }
+    
+    campo[corpo[corpo.length-1]].name = '';
+    campo[corpo[corpo.length-1]].innerHTML = '';
+    campo[corpo[0]+direcao].name = snake;
+    campo[corpo[0]+direcao].innerHTML = snake;
+    checarJogo(corpo[0]+direcao);
+    estadoTecla = 'destravado';
 },300);
 
 let gerarAlimento = setInterval(function(){

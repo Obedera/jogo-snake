@@ -1,6 +1,7 @@
 let jogo = document.querySelector('section');
 let estadoTecla = 'destravado';
-let snake = '$';
+let snake = '<img src="img/snake.png">';
+let imgCorpo = '<img src="img/'+aleatorio(0,1)+'.png">'
 let direcao = 1;
 let corpo = [116,115,114];
 
@@ -16,7 +17,7 @@ for(i=17;i<239;i++){
 
 document.querySelectorAll('section div')[corpo[0]].innerHTML = snake;
 document.querySelectorAll('section div')[corpo[0]].name = snake;
-document.querySelectorAll('section div')[corpo[1]].innerHTML = '#';
+document.querySelectorAll('section div')[corpo[1]].innerHTML = imgCorpo;
 document.querySelectorAll('section div')[corpo[1]].name = '#';
 
 
@@ -35,10 +36,10 @@ function acharPosicao(lista){
 }
 
 function checarJogo(posicao, campo){
-    if(campo[posicao].innerHTML=='@'){
+    if(campo[posicao].innerHTML!='#' && campo[posicao].innerHTML!=''){
         corpo = corpo.concat(corpo[corpo.length-1]);
     }
-    if(campo[posicao].innerHTML=='#'){
+    if(campo[posicao].name=='#'){
         clearInterval(movimentar);
         clearInterval(gerarAlimento);
         alert('vc perdeu');
@@ -90,18 +91,12 @@ function aleatorio(min, max){
 function alimento(){
     let valor;
     let status = false;
-    let comida;
     let area = document.querySelectorAll('section div[name="area"]');
-    for(i=0;i<area.length;i++){
-        if(area[i].innerHTML == '@'){
-            comida = i;
-        }
-    }
-    if(comida == null){
+    if(document.querySelector('img[name="comida"]') == null){
         while (status==false){
             valor = aleatorio(0,195);
             if(area[valor].innerHTML == ''){
-                area[valor].innerHTML = '@';
+                area[valor].innerHTML = '<img name="comida" src="img/p'+aleatorio(0,5)+'.png">';
                 status=true
             }
         }
@@ -120,7 +115,7 @@ let movimentar = setInterval(function(){
 
     for(i=0;i<corpo.length;i++){
         campo[corpo[i]].name = '#';
-        campo[corpo[i]].innerHTML = '#';
+        campo[corpo[i]].innerHTML = imgCorpo;
     }
 
     campo[corpo[corpo.length-1]].name = '';

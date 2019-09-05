@@ -6,12 +6,19 @@ body{
     width: 100vw;
 }
 h1{
-    margin: 0;
+    margin: 0 6vw;
 }
+nav{
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
 section{
     display: grid;
-    grid-template-columns: repeat(16, 35px);
-    grid-template-rows: repeat(16, 35px);
+    grid-template-columns: repeat(16, 3vw);
+    grid-template-rows: repeat(16, 5.5vh);
     grid-gap: 1px;
 }
 section div{

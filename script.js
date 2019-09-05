@@ -1,24 +1,28 @@
-let jogo = document.querySelector('section');
 let estadoTecla = 'destravado';
+let estadoJogo = true;
 let snake = '<img src="img/snake.png">';
 let imgCorpo = '<img src="img/'+aleatorio(0,1)+'.png">'
 let direcao = 1;
 let corpo = [116,115,114];
 
-for(i=0;i<256;i++){
-    jogo.innerHTML += '<div class="parede" name=""></div>';
-}
-for(i=17;i<239;i++){
-    if(i%16 != 0 && (i+1)%16 != 0){
-        document.querySelectorAll('section div')[i].classList.remove('parede');
-        document.querySelectorAll('section div')[i].setAttribute('name','area');
-    }
-}
+function fazerCampo(){
+    document.querySelector('section').innerHTML = '';
+    let jogo = document.querySelector('section');
 
-document.querySelectorAll('section div')[corpo[0]].innerHTML = snake;
-document.querySelectorAll('section div')[corpo[0]].name = snake;
-document.querySelectorAll('section div')[corpo[1]].innerHTML = imgCorpo;
-document.querySelectorAll('section div')[corpo[1]].name = '#';
+    for(i=0;i<256;i++){
+        jogo.innerHTML += '<div class="parede" name=""></div>';
+    }
+    for(i=17;i<239;i++){
+        if(i%16 != 0 && (i+1)%16 != 0){
+            document.querySelectorAll('section div')[i].classList.remove('parede');
+            document.querySelectorAll('section div')[i].setAttribute('name','area');
+        }
+    }
+    document.querySelectorAll('section div')[corpo[0]].innerHTML = snake;
+    document.querySelectorAll('section div')[corpo[0]].name = snake;
+    document.querySelectorAll('section div')[corpo[1]].innerHTML = imgCorpo;
+    document.querySelectorAll('section div')[corpo[1]].name = '#';
+}
 
 
 function pegarTecla(event){
@@ -40,18 +44,15 @@ function checarJogo(posicao, campo){
         corpo = corpo.concat(corpo[corpo.length-1]);
     }
     if(campo[posicao].name=='#'){
-        clearInterval(movimentar);
-        clearInterval(gerarAlimento);
+        estadoJogo=false;
         alert('vc perdeu');
     }
     if(posicao%16 == 0 || (posicao+1)%16 == 0){
-        clearInterval(movimentar);
-        clearInterval(gerarAlimento);
+        estadoJogo=false;
         alert('vc perdeu');
     }
     if(posicao < 17 || posicao>238){
-        clearInterval(movimentar);
-        clearInterval(gerarAlimento);
+        estadoJogo=false;
         alert('vc perdeu');
     }
 }
@@ -103,31 +104,51 @@ function alimento(){
     }
 }
 
-let movimentar = setInterval(function(){
-    let campo = document.querySelectorAll('section div');
-    let posicao = acharPosicao(campo);
-    let aux = [];
-    aux[0] = posicao;
-    for(i=0;i<corpo.length-1;i++){
-        aux[i+1] = corpo[i];
-    }
-    corpo = aux;
 
-    for(i=0;i<corpo.length;i++){
-        campo[corpo[i]].name = '#';
-        campo[corpo[i]].innerHTML = imgCorpo;
-    }
+function iniciarJogo(){
+    fazerCampo();
+    estadoJogo=true;
+    document.querySelector('nav').innerHTML = '<h1>Jogo Snake</h1>';
+    let movimentar = setInterval(function(){
+        let campo = document.querySelectorAll('section div');
+        let posicao = acharPosicao(campo);
+        let aux = [];
+        aux[0] = posicao;
+        for(i=0;i<corpo.length-1;i++){
+            aux[i+1] = corpo[i];
+        }
+        corpo = aux;
+        for(i=0;i<corpo.length;i++){
+            campo[corpo[i]].name = '#';
+            campo[corpo[i]].innerHTML = imgCorpo;
+        }
+        
+        campo[corpo[corpo.length-1]].name = '';
+        campo[corpo[corpo.length-1]].innerHTML = '';
+        checarJogo(corpo[0]+direcao, campo);
+        if(estadoJogo == true){
+            campo[corpo[0]+direcao].name = snake;
+            campo[corpo[0]+direcao].innerHTML = snake;
+            estadoTecla = 'destravado';
+        }
+        else{
+            clearInterval(movimentar);
+            clearInterval(gerarAlimento);
+            document.querySelector('nav').innerHTML += '<button onclick="reiniciar();">Reiniciar</button>';    
+        }
+    },300);
+    
+    let gerarAlimento = setInterval(function(){
+        alimento()
+    },5000);    
+}
 
-    campo[corpo[corpo.length-1]].name = '';
-    campo[corpo[corpo.length-1]].innerHTML = '';
-    checarJogo(corpo[0]+direcao, campo);
-    campo[corpo[0]+direcao].name = snake;
-    campo[corpo[0]+direcao].innerHTML = snake;
-    estadoTecla = 'destravado';
-},300);
+function reiniciar(){
+    direcao = 1;
+    corpo = [116,115,114];
+    fazerCampo();
+    iniciarJogo();   
+}
 
-let gerarAlimento = setInterval(function(){
-    alimento()
-},5000)
-
+iniciarJogo();
 document.addEventListener('keydown', pegarTecla)

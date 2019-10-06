@@ -1,7 +1,7 @@
 let estadoTecla = 'destravado';
 let estadoJogo = true;
 let snake = '<img src="img/snake.png">';
-let imgCorpo = '<img src="img/'+aleatorio(0,1)+'.png">'
+let imgCorpo = '<img class="corpo" src="img/'+aleatorio(0,1)+'.png">'
 let direcao = 1;
 let corpo = [116,115,114];
 

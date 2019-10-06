@@ -16,6 +16,7 @@ nav{
 }
 
 section{
+    background-color: rgb(7, 165, 47);
     display: grid;
     grid-template-columns: repeat(16, 3vw);
     grid-template-rows: repeat(16, 5.5vh);
@@ -34,6 +35,20 @@ section div img{
     height: 100%;
     width: 100%;
 }
+.corpo{
+    animation: Corpo-spin infinite 0.3s linear;
+    pointer-events: none;
+}
+  
+@keyframes Corpo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(10deg);
+    }
+}
+
 .parede{
     background-color: black;
 }
